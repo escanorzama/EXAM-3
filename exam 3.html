@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BIO 201 Study Guide Exam</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f9fa;
+      padding: 20px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      padding: 20px;
+    }
+    .question {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .option {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .option.selected {
+      background: #e2f0ff;
+      border-color: #007bff;
+    }
+    .feedback {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .correct {
+      color: green;
+    }
+    .incorrect {
+      color: red;
+    }
+    .submit-btn {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>BIO 201 Study Guide Exam</h1>
+  <div id="quiz"></div>
+  <button class="submit-btn" onclick="submitQuiz()">Submit Exam</button>
+  <div id="score"></div>
+
+  <script>
+    const quizData = [
+  {
+    question: "Which bone is part of the axial skeleton?",
+    options: ["Clavicle", "Femur", "Temporal bone", "Scapula"],
+    answer: "Temporal bone"
+  },
+  {
+    question: "How many cervical vertebrae are there?",
+    options: ["5", "7", "12", "4"],
+    answer: "7"
+  },
+  {
+    question: "Which sinus is located in the forehead?",
+    options: ["Maxillary", "Ethmoid", "Frontal", "Sphenoid"],
+    answer: "Frontal"
+  },
+  {
+    question: "Which muscle is the prime mover in a bicep curl?",
+    options: ["Triceps brachii", "Biceps brachii", "Deltoid", "Brachialis"],
+    answer: "Biceps brachii"
+  },
+  {
+    question: "What type of joint is the knee?",
+    options: ["Hinge", "Ball-and-socket", "Pivot", "Saddle"],
+    answer: "Hinge"
+  },
+  {
+    question: "What is the function of articular cartilage?",
+    options: ["Stores calcium", "Produces red blood cells", "Reduces friction in joints", "Connects muscle to bone"],
+    answer: "Reduces friction in joints"
+  },
+  {
+    question: "Which of the following bones is part of the pelvic girdle?",
+    options: ["Scapula", "Ilium", "Femur", "Radius"],
+    answer: "Ilium"
+  },
+  {
+    question: "Which muscle elevates the scapula and extends the neck?",
+    options: ["Trapezius", "Deltoid", "Latissimus dorsi", "Serratus anterior"],
+    answer: "Trapezius"
+  },
+  {
+    question: "Which nerve supplies the diaphragm?",
+    options: ["Facial nerve", "Phrenic nerve", "Vagus nerve", "Radial nerve"],
+    answer: "Phrenic nerve"
+  },
+  {
+    question: "What kind of joint is the shoulder?",
+    options: ["Hinge", "Saddle", "Ball-and-socket", "Pivot"],
+    answer: "Ball-and-socket"
+  },
+  {
+    question: "What is the longest muscle in the body?",
+    options: ["Gracilis", "Sartorius", "Rectus femoris", "Biceps femoris"],
+    answer: "Sartorius"
+  },
+  {
+    question: "Which cranial nerve controls facial expression muscles?",
+    options: ["Trigeminal (V)", "Oculomotor (III)", "Facial (VII)", "Glossopharyngeal (IX)"],
+    answer: "Facial (VII)"
+  },
+  {
+    question: "Which region of the spine bears the most weight?",
+    options: ["Cervical", "Thoracic", "Lumbar", "Sacral"],
+    answer: "Lumbar"
+  },
+  {
+    question: "The foramen magnum is located in which bone?",
+    options: ["Frontal", "Occipital", "Parietal", "Temporal"],
+    answer: "Occipital"
+  },
+  {
+    question: "Which suture separates the parietal bones?",
+    options: ["Lambdoid", "Coronal", "Sagittal", "Squamous"],
+    answer: "Sagittal"
+  },
+  {
+    question: "Which bones form the hard palate?",
+    options: ["Maxilla and palatine", "Zygomatic and nasal", "Vomer and sphenoid", "Mandible and maxilla"],
+    answer: "Maxilla and palatine"
+  },
+  {
+    question: "Which structure houses the pituitary gland?",
+    options: ["Crista galli", "Sella turcica", "Foramen ovale", "Temporal fossa"],
+    answer: "Sella turcica"
+  },
+  {
+    question: "Which muscle is responsible for knee extension?",
+    options: ["Biceps femoris", "Gastrocnemius", "Rectus femoris", "Semitendinosus"],
+    answer: "Rectus femoris"
+  },
+  {
+    question: "Which nerve innervates the masseter muscle?",
+    options: ["Facial", "Vagus", "Hypoglossal", "Trigeminal (V3)"],
+    answer: "Trigeminal (V3)"
+  },
+  {
+    question: "Which movement term describes turning the palm upward?",
+    options: ["Pronation", "Supination", "Rotation", "Inversion"],
+    answer: "Supination"
+  },
+  {
+    question: "Which muscle is responsible for plantarflexion of the foot?",
+    options: ["Tibialis anterior", "Gastrocnemius", "Soleus", "Biceps femoris"],
+    answer: "Gastrocnemius"
+  },
+  {
+    question: "Which bone is known as the collarbone?",
+    options: ["Clavicle", "Scapula", "Humerus", "Sternum"],
+    answer: "Clavicle"
+  },
+  {
+    question: "Which bone forms the lower jaw?",
+    options: ["Mandible", "Maxilla", "Zygomatic", "Vomer"],
+    answer: "Mandible"
+  },
+  {
+    question: "What is the name of the hole in the skull that the spinal cord passes through?",
+    options: ["Foramen ovale", "Foramen magnum", "Optic canal", "Jugular foramen"],
+    answer: "Foramen magnum"
+  },
+  {
+    question: "Which type of joint is found in the thumb (carpometacarpal joint)?",
+    options: ["Hinge", "Ball-and-socket", "Pivot", "Saddle"],
+    answer: "Saddle"
+  },
+  {
+    question: "Which cranial nerve innervates the levator palpebrae superioris muscle?",
+    options: ["Facial (VII)", "Oculomotor (III)", "Trigeminal (V)", "Trochlear (IV)"],
+    answer: "Oculomotor (III)"
+  },
+  {
+    question: "Which bone contains the crista galli?",
+    options: ["Sphenoid", "Temporal", "Ethmoid", "Parietal"],
+    answer: "Ethmoid"
+  },
+  {
+    question: "Which bone has the greater and lesser trochanters?",
+    options: ["Tibia", "Femur", "Humerus", "Fibula"],
+    answer: "Femur"
+  },
+  {
+    question: "Which joint contains the meniscus?",
+    options: ["Hip", "Knee", "Shoulder", "Elbow"],
+    answer: "Knee"
+  },
+  {
+    question: "Which term means moving a body part toward the midline?",
+    options: ["Abduction", "Adduction", "Flexion", "Extension"],
+    answer: "Adduction"
+  },
+  {
+    question: "Which nerve supplies the sternocleidomastoid muscle?",
+    options: ["Accessory (XI)", "Vagus (X)", "Facial (VII)", "Hypoglossal (XII)"],
+    answer: "Accessory (XI)"
+  },
+  {
+    question: "What type of joint allows rotation around a single axis?",
+    options: ["Hinge", "Pivot", "Ball-and-socket", "Gliding"],
+    answer: "Pivot"
+  },
+  {
+    question: "Which part of a long bone is known as the shaft?",
+    options: ["Epiphysis", "Metaphysis", "Diaphysis", "Endosteum"],
+    answer: "Diaphysis"
+  },
+  {
+    question: "Which muscle is part of the rotator cuff?",
+    options: ["Deltoid", "Supraspinatus", "Latissimus dorsi", "Teres major"],
+    answer: "Supraspinatus"
+  },
+  {
+    question: "Which movement term describes decreasing the angle between two bones?",
+    options: ["Extension", "Flexion", "Abduction", "Circumduction"],
+    answer: "Flexion"
+  },
+  {
+    question: "Which muscle forms the bulk of the calf?",
+    options: ["Tibialis anterior", "Peroneus longus", "Gastrocnemius", "Soleus"],
+    answer: "Gastrocnemius"
+  },
+  {
+    question: "Which structure connects muscle to bone?",
+    options: ["Ligament", "Cartilage", "Tendon", "Bursa"],
+    answer: "Tendon"
+  },
+  {
+    question: "Which facial muscle closes the eyelids?",
+    options: ["Orbicularis oris", "Frontalis", "Orbicularis oculi", "Zygomaticus"],
+    answer: "Orbicularis oculi"
+  },
+  {
+    question: "Which nerve innervates the diaphragm?",
+    options: ["Vagus", "Phrenic", "Accessory", "Cervical plexus"],
+    answer: "Phrenic"
+  },
+  {
+    question: "Which term describes the ankle motion when standing on tiptoes?",
+    options: ["Dorsiflexion", "Plantarflexion", "Inversion", "Eversion"],
+    answer: "Plantarflexion"
+  }
+];
+
+    const selectedAnswers = {};
+
+    const quizContainer = document.getElementById("quiz");
+
+    quizData.forEach((q, index) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      const question = document.createElement("div");
+      question.className = "question";
+      question.textContent = `${index + 1}. ${q.question}`;
+      card.appendChild(question);
+
+      q.options.forEach(option => {
+        const btn = document.createElement("div");
+        btn.className = "option";
+        btn.textContent = option;
+        btn.onclick = () => {
+          selectedAnswers[index] = option;
+          [...card.querySelectorAll('.option')].forEach(opt => opt.classList.remove('selected'));
+          btn.classList.add('selected');
+        };
+        card.appendChild(btn);
+      });
+
+      quizContainer.appendChild(card);
+    });
+
+    function submitQuiz() {
+      let score = 0;
+      quizData.forEach((q, i) => {
+        const card = quizContainer.children[i];
+        const selected = selectedAnswers[i];
+        const feedback = document.createElement("div");
+        feedback.className = "feedback";
+        if (selected === q.answer) {
+          feedback.classList.add("correct");
+          feedback.textContent = "Correct";
+          score++;
+        } else {
+          feedback.classList.add("incorrect");
+          feedback.textContent = `Incorrect. Correct answer: ${q.answer}`;
+        }
+        card.appendChild(feedback);
+      });
+      document.getElementById("score").textContent = `Final Score: ${score} / ${quizData.length}`;
+      document.querySelector(".submit-btn").disabled = true;
+    }
+  </script>
+</body>
+</html>
